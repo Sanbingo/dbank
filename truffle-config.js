@@ -1,59 +1,24 @@
 require('babel-register');
 require('babel-polyfill');
 require('dotenv').config();
-const HDWalletProvider = require('truffle-hdwallet-provider-privkey');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 const privateKeys = process.env.PRIVATE_KEYS || ""
+const infuraKey = process.env.INFURA_API_KEY || ""
 
 module.exports = {
   networks: {
     development: {
       host: "127.0.0.1",
-      port: 7545,
+      port: 8545,
       network_id: "*" // Match any network id
     },
-    kovan: {
-      provider: function() {
-        return new HDWalletProvider(
-          privateKeys.split(','), // Array of account private keys
-          `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`// Url to an Ethereum Node
-        )
-      },
-      gas: 5000000,
-      gasPrice: 5000000000, // 5 gwei
-      network_id: 42
-    },
-    main: {
-      provider: function() {
-        return new HDWalletProvider(
-          privateKeys.split(','), // Array of account private keys
-          `https://main.infura.io/v3/${process.env.INFURA_API_KEY}`// Url to an Ethereum Node
-        )
-      },
-      gas: 5000000,
-      gasPrice: 5000000000, // 5 gwei
-      network_id: 1
-    },
-    rinkeby: {
-      provider: function() {
-        return new HDWalletProvider(
-          privateKeys.split(','), // Array of account private keys
-          `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`// Url to an Ethereum Node
-        )
-      },
-      gas: 5000000,
-      gasPrice: 5000000000, // 5 gwei
-      network_id: 4
-    },
     ropsten: {
-      provider: function() {
-        return new HDWalletProvider(
-          privateKeys.split(','), // Array of account private keys
-          `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`// Url to an Ethereum Node
-        )
-      },
-      gas: 5000000,
-      gasPrice: 5000000000, // 5 gwei
-      network_id: 3
+      provider: () => new HDWalletProvider([privateKeys], `https://ropsten.infura.io/v3/` + infuraKey),
+      network_id: 3,
+      gas: 5500000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
     }
   },
   contracts_directory: './src/contracts/',

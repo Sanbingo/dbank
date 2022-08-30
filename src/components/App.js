@@ -19,6 +19,7 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts()
 
       //load balance
+      console.log('accounts: ', accounts)
       if(typeof accounts[0] !=='undefined'){
         const balance = await web3.eth.getBalance(accounts[0])
         this.setState({account: accounts[0], balance: balance, web3: web3})
